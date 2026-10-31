@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/transkrip/sinkron"
+method: POST
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "classId": 1,
+      "items": []
+    }
+order: 7000

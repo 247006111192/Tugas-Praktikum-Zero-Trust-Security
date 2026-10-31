@@ -1,0 +1,8 @@
+$kind: http-request
+name: 4.4 Mahasiswa Melihat Transkrip Sendiri (GET /transkrip/:nim)
+url: "{{baseUrl}}/transkrip/{{transcriptNim}}"
+method: GET
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+order: 4000

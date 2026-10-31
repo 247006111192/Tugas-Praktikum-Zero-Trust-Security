@@ -1,0 +1,23 @@
+$kind: http-request
+name: 2.10 Terbitkan Service Token (POST /auth/service)
+url: "{{baseUrl}}/auth/service"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "clientId": "{{serviceClientId}}",
+      "clientSecret": "{{serviceClientSecret}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      const res = pm.response.json();
+      if (res.success && res.data && res.data.serviceToken) {
+          pm.environment.set('serviceToken', res.data.serviceToken);
+          console.log('Service token tersimpan ke environment');
+      }
+    language: text/javascript
+order: 10000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+  X-Device-ID: DEV-INACTIVE-01
+body:
+  type: text
+  content: |-
+    {
+      "email": "inactive@kampus.ac.id",
+      "password": "Password123!"
+    }
+order: 7000

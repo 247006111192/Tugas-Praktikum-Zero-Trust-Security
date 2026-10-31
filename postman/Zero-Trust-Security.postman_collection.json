@@ -1,0 +1,694 @@
+{
+  "info": {
+    "_postman_id": "c1f7b889-4a30-4e3e-bf63-95b1e9c20a44",
+    "name": "Zero Trust Security - Sistem Layanan Nilai Akademik",
+    "description": "Koleksi Postman untuk pengujian arsitektur Zero Trust Security pada Sistem Layanan Nilai Akademik.\nSemua request pengguna diarahkan ke API Gateway (Port 3000) sebagai Policy Enforcement Point (PEP).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Checks",
+      "item": [
+        {
+          "name": "Health Check - API Gateway (:3000)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Health Check - Service Nilai (:3001)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Health Check - Service Transkrip (:3002)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3002",
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Autentikasi dan Token",
+      "item": [
+        {
+          "name": "2.1 Login Dosen 1 (Berhasil)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.tokens) {",
+                  "    pm.environment.set('accessToken', res.data.tokens.accessToken);",
+                  "    pm.environment.set('refreshToken', res.data.tokens.refreshToken);",
+                  "    pm.environment.set('deviceId', 'DEV-DOSEN-01');",
+                  "    console.log('Access token dan refresh token Dosen 1 tersimpan ke environment');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-DOSEN-01"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dosen1@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.2 Login Mahasiswa 1 (Berhasil)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.tokens) {",
+                  "    pm.environment.set('accessToken', res.data.tokens.accessToken);",
+                  "    pm.environment.set('refreshToken', res.data.tokens.refreshToken);",
+                  "    pm.environment.set('deviceId', 'DEV-MHS-01');",
+                  "    pm.environment.set('studentNim', '2021001');",
+                  "    console.log('Token Mahasiswa 1 tersimpan ke environment');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-MHS-01"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mhs1@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.3 Login Admin (Berhasil)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.tokens) {",
+                  "    pm.environment.set('accessToken', res.data.tokens.accessToken);",
+                  "    pm.environment.set('refreshToken', res.data.tokens.refreshToken);",
+                  "    pm.environment.set('deviceId', 'DEV-ADMIN-01');",
+                  "    console.log('Token Admin tersimpan ke environment');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-ADMIN-01"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.4 Login Ditolak - Password Salah (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-DOSEN-01"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dosen1@kampus.ac.id\",\n  \"password\": \"PasswordSalahTotal!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.5 Login Ditolak - Tanpa X-Device-ID (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dosen1@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.6 Login Ditolak - Device Tidak Terdaftar (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-ASING-ILEGAL"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dosen1@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.7 Login Ditolak - Akun Nonaktif (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "DEV-INACTIVE-01"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"inactive@kampus.ac.id\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2.8 Refresh Token Rotation (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data) {",
+                  "    pm.environment.set('accessToken', res.data.accessToken);",
+                  "    pm.environment.set('refreshToken', res.data.refreshToken);",
+                  "    console.log('Rotasi token berhasil: Access & Refresh Token baru tersimpan');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "2.9 Logout (200 OK)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "2.10 Terbitkan Service Token (POST /auth/service)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.success && res.data && res.data.serviceToken) {",
+                  "    pm.environment.set('serviceToken', res.data.serviceToken);",
+                  "    console.log('Service token tersimpan ke environment');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": \"{{serviceClientId}}\",\n  \"clientSecret\": \"{{serviceClientSecret}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/service",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "service"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Layanan Nilai (Service Nilai)",
+      "item": [
+        {
+          "name": "3.1 Melihat Nilai Sesuai Kebijakan (GET /nilai)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/nilai",
+              "host": ["{{baseUrl}}"],
+              "path": ["nilai"]
+            }
+          }
+        },
+        {
+          "name": "3.2 Dosen Mengubah Nilai Mahasiswa (PUT /nilai/:id)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 88.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nilai/{{gradeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["nilai", "{{gradeId}}"]
+            }
+          }
+        },
+        {
+          "name": "3.3 Dosen Ditolak Mengubah Nilai Kelas Lain (403)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 95.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nilai/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["nilai", "3"]
+            }
+          }
+        },
+        {
+          "name": "3.4 Perubahan Nilai Ditolak di Luar Jam Akses (403)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Test-Time-Override",
+                "value": "2026-10-29T23:30:00+07:00"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"score\": 90.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nilai/{{gradeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["nilai", "{{gradeId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Finalisasi Kelas dan Transkrip",
+      "item": [
+        {
+          "name": "4.1 Dosen Pengampu Finalisasi Kelas (POST /kelas/:id/finalisasi)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/kelas/{{classId}}/finalisasi",
+              "host": ["{{baseUrl}}"],
+              "path": ["kelas", "{{classId}}", "finalisasi"]
+            }
+          }
+        },
+        {
+          "name": "4.2 Dosen Bukan Pengampu Ditolak Finalisasi (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/kelas/2/finalisasi",
+              "host": ["{{baseUrl}}"],
+              "path": ["kelas", "2", "finalisasi"]
+            }
+          }
+        },
+        {
+          "name": "4.3 Finalisasi Ditolak di Luar Jam Akses (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              },
+              {
+                "key": "X-Test-Time-Override",
+                "value": "2026-10-29T02:00:00+07:00"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/kelas/{{classId}}/finalisasi",
+              "host": ["{{baseUrl}}"],
+              "path": ["kelas", "{{classId}}", "finalisasi"]
+            }
+          }
+        },
+        {
+          "name": "4.4 Mahasiswa Melihat Transkrip Sendiri (GET /transkrip/:nim)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transkrip/{{transcriptNim}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transkrip", "{{transcriptNim}}"]
+            }
+          }
+        },
+        {
+          "name": "4.5 Mahasiswa Ditolak Melihat Transkrip Lain (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transkrip/2021002",
+              "host": ["{{baseUrl}}"],
+              "path": ["transkrip", "2021002"]
+            }
+          }
+        },
+        {
+          "name": "4.6 Sinkronisasi Transkrip Menggunakan Service Token (200 OK)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{serviceToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"classId\": 1,\n  \"items\": [\n    {\n      \"student_id\": 4,\n      \"score\": 88.5,\n      \"source_grade_id\": 1\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transkrip/sinkron",
+              "host": ["{{baseUrl}}"],
+              "path": ["transkrip", "sinkron"]
+            }
+          }
+        },
+        {
+          "name": "4.7 User Access Token Ditolak pada Sinkronisasi (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"classId\": 1,\n  \"items\": []\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transkrip/sinkron",
+              "host": ["{{baseUrl}}"],
+              "path": ["transkrip", "sinkron"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Audit Logs",
+      "item": [
+        {
+          "name": "5.1 Melihat Audit Log (Hanya Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "X-Device-ID",
+                "value": "{{deviceId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/audit-logs?limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["audit-logs"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

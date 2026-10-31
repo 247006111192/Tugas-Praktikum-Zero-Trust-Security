@@ -1,0 +1,26 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+  X-Device-ID: DEV-MHS-01
+body:
+  type: text
+  content: |-
+    {
+      "email": "mhs1@kampus.ac.id",
+      "password": "Password123!"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      const res = pm.response.json();
+      if (res.success && res.data && res.data.tokens) {
+          pm.environment.set('accessToken', res.data.tokens.accessToken);
+          pm.environment.set('refreshToken', res.data.tokens.refreshToken);
+          pm.environment.set('deviceId', 'DEV-MHS-01');
+          pm.environment.set('studentNim', '2021001');
+          console.log('Token Mahasiswa 1 tersimpan ke environment');
+      }
+    language: text/javascript
+order: 2000

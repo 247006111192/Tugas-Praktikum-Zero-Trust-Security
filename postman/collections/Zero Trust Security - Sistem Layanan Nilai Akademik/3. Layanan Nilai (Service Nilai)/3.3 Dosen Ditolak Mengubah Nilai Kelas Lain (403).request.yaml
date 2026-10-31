@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/nilai/3"
+method: PUT
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "score": 95.0
+    }
+order: 3000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/transkrip/sinkron"
+method: POST
+headers:
+  Authorization: Bearer {{serviceToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "classId": 1,
+      "items": [
+        {
+          "student_id": 4,
+          "score": 88.5,
+          "source_grade_id": 1
+        }
+      ]
+    }
+order: 6000

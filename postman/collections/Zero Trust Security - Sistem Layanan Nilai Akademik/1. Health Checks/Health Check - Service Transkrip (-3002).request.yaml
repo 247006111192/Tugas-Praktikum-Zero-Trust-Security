@@ -1,0 +1,5 @@
+$kind: http-request
+name: Health Check - Service Transkrip (:3002)
+url: http://localhost:3002/health
+method: GET
+order: 3000

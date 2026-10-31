@@ -1,0 +1,8 @@
+$kind: http-request
+name: 4.1 Dosen Pengampu Finalisasi Kelas (POST /kelas/:id/finalisasi)
+url: "{{baseUrl}}/kelas/{{classId}}/finalisasi"
+method: POST
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+order: 1000

@@ -1,0 +1,15 @@
+$kind: http-request
+name: 3.2 Dosen Mengubah Nilai Mahasiswa (PUT /nilai/:id)
+url: "{{baseUrl}}/nilai/{{gradeId}}"
+method: PUT
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "score": 88.5
+    }
+order: 2000

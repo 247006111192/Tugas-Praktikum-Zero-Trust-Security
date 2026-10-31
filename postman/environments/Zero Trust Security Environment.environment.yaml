@@ -1,0 +1,24 @@
+name: Zero Trust Security Environment
+values:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+  - key: accessToken
+    value: ''
+  - key: refreshToken
+    value: ''
+  - key: deviceId
+    value: DEV-DOSEN-01
+  - key: studentNim
+    value: '2021001'
+  - key: gradeId
+    value: '1'
+  - key: classId
+    value: '1'
+  - key: transcriptNim
+    value: '2021001'
+  - key: serviceClientId
+    value: service-nilai
+  - key: serviceClientSecret
+    value: secret-credential-for-nilai-service-sync-2026
+  - key: serviceToken
+    value: ''

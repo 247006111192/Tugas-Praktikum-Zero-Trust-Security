@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/transkrip/2021002"
+method: GET
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+order: 5000

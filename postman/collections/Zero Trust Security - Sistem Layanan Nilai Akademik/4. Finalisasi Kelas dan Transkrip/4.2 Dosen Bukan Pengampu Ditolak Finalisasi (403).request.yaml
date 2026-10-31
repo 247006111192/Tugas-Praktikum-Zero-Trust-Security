@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/kelas/2/finalisasi"
+method: POST
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+order: 2000

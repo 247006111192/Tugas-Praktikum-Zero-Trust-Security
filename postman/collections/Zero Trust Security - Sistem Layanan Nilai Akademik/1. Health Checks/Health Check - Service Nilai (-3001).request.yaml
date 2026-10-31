@@ -1,0 +1,5 @@
+$kind: http-request
+name: Health Check - Service Nilai (:3001)
+url: http://localhost:3001/health
+method: GET
+order: 2000

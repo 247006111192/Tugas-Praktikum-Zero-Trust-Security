@@ -1,0 +1,4 @@
+$kind: collection
+description: |-
+  Koleksi Postman untuk pengujian arsitektur Zero Trust Security pada Sistem Layanan Nilai Akademik.
+  Semua request pengguna diarahkan ke API Gateway (Port 3000) sebagai Policy Enforcement Point (PEP).

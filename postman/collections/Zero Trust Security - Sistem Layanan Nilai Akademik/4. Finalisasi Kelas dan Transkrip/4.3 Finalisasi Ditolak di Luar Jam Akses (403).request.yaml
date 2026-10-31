@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/kelas/{{classId}}/finalisasi"
+method: POST
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+  X-Test-Time-Override: 2026-10-29T02:00:00+07:00
+order: 3000

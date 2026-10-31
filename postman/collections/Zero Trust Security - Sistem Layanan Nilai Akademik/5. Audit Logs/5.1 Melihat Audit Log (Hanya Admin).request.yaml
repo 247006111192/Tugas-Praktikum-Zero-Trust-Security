@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/audit-logs?limit=50"
+method: GET
+headers:
+  Authorization: Bearer {{accessToken}}
+  X-Device-ID: "{{deviceId}}"
+queryParams:
+  limit: "50"
+order: 1000
